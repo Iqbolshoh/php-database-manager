@@ -3,7 +3,7 @@ include './config.php';
 
 $query = new Query();
 
-
+// Data to insert
 $data = [
     'name' => 'John',
     'last_name' => 'Doe',
@@ -19,58 +19,51 @@ $data = [
 $result = $query->insert('users', $data);
 
 if ($result) {
-    echo "Malumot qo'shildi!";
+    echo "Data added successfully!";
 } else {
-    echo "Malumot qo'shishda xatolik yuz berdi!";
+    echo "Error occurred while adding data!";
 }
 
 
-// // Yangilash uchun ma'lumotlar
+// // Data for updating
 // $data = [
 //     'name' => 'John',
 //     'last_name' => 'Doe',
 //     'birthday' => '1990-01-01',
 //     'gender' => 'Male',
 //     'username' => 'john_doe',
-//     'password' => 'new_password123', // Yangi parol
+//     'password' => 'new_password123', // New password
 //     'phone_number' => '+1234567890',
 //     'email' => 'john@example.com',
 //     'profile_image' => 'profile.jpg'
 // ];
 
-// // Foydalanuvchi ma'lumotlarini yangilash
-// $result = $query->update('users', $data, "WHERE id = 1"); // Masalan, foydalanuvchi ID'si 1 bo'lgan uchun
+// // Update user data
+// $result = $query->update('users', $data, "WHERE id = 1"); // For example, where user ID is 1
 
 // if ($result) {
-//     echo "Malumotlar yangilandi!";
+//     echo "Data updated successfully!";
 // } else {
-//     echo "Malumotlarni yangilashda xatolik yuz berdi!";
+//     echo "Error occurred while updating data!";
 // }
 
-
-
-// Foydalanuvchi ma'lumotlarini tanlash
-// $userData = $query->select('users', '*', "WHERE id = 1"); // Masalan, foydalanuvchi ID'si 1 bo'lgan uchun
+// Fetch user data
+// $userData = $query->select('users', '*', "WHERE id = 1"); // For example, where user ID is 1
 
 // if ($userData) {
-//     print_r($userData); // Ma'lumotlar ko'rsatiladi
+//     print_r($userData); // Display data
 // } else {
-//     echo "Ma'lumotlarni ko'rishda xatolik yuz berdi!";
+//     echo "Error occurred while fetching data!";
 // }
 
-
-
+// Delete user data
 // if ($query->delete("users", "WHERE id = 1"))
-//     echo "Malumot o'chirildi";
+//     echo "Data deleted successfully";
 // else {
-//     echo "Malumotlarni o'chirishda xatolik yuz berdi!";
+//     echo "Error occurred while deleting data!";
 // }
 
-
-
-
-// $query = new Query();
-
+// // Data for adding to cart
 // $data = [
 //     'user_id' => 1,
 //     'product_id' => 101,
@@ -82,7 +75,7 @@ if ($result) {
 // $result = $query->insert('cart', $data);
 
 // if ($result) {
-//     echo "Mahsulot savatchaga muvaffaqiyatli qo'shildi!";
+//     echo "Product added to cart successfully!";
 // } else {
-//     echo "Xatolik yuz berdi! Mahsulot savatchaga qo'shilmadi.";
+//     echo "Error occurred! Product not added to cart.";
 // }
