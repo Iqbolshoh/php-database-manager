@@ -44,7 +44,7 @@ The `Query` class provides a simple interface for performing common database ope
 
 ## Methods
 
-## validate($data)
+### [validate($data)](#validate)
 
 - **Description:** Escapes special characters to prevent HTML injection.
 - **Parameters:**
