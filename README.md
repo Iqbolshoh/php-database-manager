@@ -44,7 +44,7 @@ The `Query` class provides a simple interface for performing common database ope
 
 ## Methods
 
-### `validate($data)`
+### [validate($data)](#validate)
 
 - **Description:** Escapes special characters to prevent HTML injection.
 - **Parameters:**
@@ -56,7 +56,7 @@ The `Query` class provides a simple interface for performing common database ope
   - Removes backslashes.
   - Converts special characters to HTML entities.
 
-### `executeQuery($sql)`
+### [executeQuery($sql)](#executequery)
 
 - **Description:** Executes a given SQL query.
 - **Parameters:**
@@ -66,7 +66,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - If the query execution fails, an error message is displayed and the script exits.
 
-### `select($table, $columns = "*", $condition = "")`
+### [select($table, $columns = "*", $condition = "")](#select)
 
 - **Description:** Retrieves data from the specified table.
 - **Parameters:**
@@ -78,7 +78,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - Constructs and executes a `SELECT` query.
 
-### `insert($table, $data)`
+### [insert($table, $data)](#insert)
 
 - **Description:** Inserts data into the specified table.
 - **Parameters:**
@@ -89,7 +89,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - Constructs and executes an `INSERT` query.
 
-### `update($table, $data, $condition = "")`
+### [update($table, $data, $condition = "")](#update)
 
 - **Description:** Updates data in the specified table.
 - **Parameters:**
@@ -101,7 +101,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - Constructs and executes an `UPDATE` query.
 
-### `delete($table, $condition = "")`
+### [delete($table, $condition = "")](#delete)
 
 - **Description:** Deletes data from the specified table.
 - **Parameters:**
@@ -112,7 +112,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - Constructs and executes a `DELETE` query.
 
-### `hashPassword($password)`
+### [hashPassword($password)](#hashpassword)
 
 - **Description:** Hashes a password using HMAC with SHA-256.
 - **Parameters:**
@@ -122,7 +122,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Details:**
   - Uses a hard-coded key `"AccountPassword"` for hashing.
 
-### `authenticate($username, $password, $table)`
+### [authenticate($username, $password, $table)](#authenticate)
 
 - **Description:** Checks user credentials for login.
 - **Parameters:**
