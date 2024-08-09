@@ -1,6 +1,6 @@
 # Query Class
 
-The `Query` class provides a simple interface for performing common database operations using PHP's `mysqli` extension. This class includes methods for connecting to a database, executing queries, and handling basic CRUD (Create, Read, Update, Delete) operations. Additionally, it includes methods for password hashing and user authentication.
+The `Query` class provides a straightforward interface for handling common database operations using PHP's `mysqli` extension. It offers methods for connecting to a database, executing queries, and performing basic CRUD (Create, Read, Update, Delete) operations. Additionally, the class includes methods for password hashing and user authentication.
 
 ## Table of Contents
 
@@ -23,34 +23,31 @@ The `Query` class provides a simple interface for performing common database ope
 ### `__construct()`
 
 - **Description:** Initializes a connection to the database.
-- **Parameters:**
-  - None
+- **Parameters:** None
 - **Details:**
   - Connects to a MySQL database using the `mysqli` extension.
-  - Connection parameters are hard-coded as:
+  - Connection parameters are hard-coded:
     - **Server:** `localhost`
     - **Username:** `root`
     - **Password:** `""` (empty string)
     - **Database Name:** `database`
-  - If the connection fails, an error message is displayed and the script exits.
+  - Displays an error message and exits if the connection fails.
 
 ### `__destruct()`
 
 - **Description:** Closes the database connection when the object is destroyed.
-- **Parameters:**
-  - None
+- **Parameters:** None
 - **Details:**
-  - Ensures that the database connection is properly closed.
+  - Ensures the database connection is properly closed.
 
 ## Methods
 
 ### [validate($data)](#validate)
 
-- **Description:** Escapes special characters to prevent HTML injection.
+- **Description:** Escapes special characters to prevent SQL injection.
 - **Parameters:**
   - **$data:** An associative array of data to be sanitized.
-- **Returns:**
-  - The sanitized data array.
+- **Returns:** The sanitized data array.
 - **Details:**
   - Removes whitespace from the beginning and end.
   - Removes backslashes.
@@ -61,10 +58,9 @@ The `Query` class provides a simple interface for performing common database ope
 - **Description:** Executes a given SQL query.
 - **Parameters:**
   - **$sql:** The SQL query to be executed.
-- **Returns:**
-  - The result of the query.
+- **Returns:** The result of the query.
 - **Details:**
-  - If the query execution fails, an error message is displayed and the script exits.
+  - Displays an error message and exits if the query execution fails.
 
 ### [select($table, $columns = "*", $condition = "")](#select)
 
@@ -73,8 +69,7 @@ The `Query` class provides a simple interface for performing common database ope
   - **$table:** The name of the table to select data from.
   - **$columns:** A comma-separated list of columns to retrieve (default is `*` for all columns).
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
-- **Returns:**
-  - An associative array of the result set.
+- **Returns:** An associative array of the result set.
 - **Details:**
   - Constructs and executes a `SELECT` query.
 
@@ -84,8 +79,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Parameters:**
   - **$table:** The name of the table to insert data into.
   - **$data:** An associative array of column names and values.
-- **Returns:**
-  - The result of the query execution.
+- **Returns:** The result of the query execution.
 - **Details:**
   - Constructs and executes an `INSERT` query.
 
@@ -96,8 +90,7 @@ The `Query` class provides a simple interface for performing common database ope
   - **$table:** The name of the table to update.
   - **$data:** An associative array of column names and new values.
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
-- **Returns:**
-  - The result of the query execution.
+- **Returns:** The result of the query execution.
 - **Details:**
   - Constructs and executes an `UPDATE` query.
 
@@ -107,8 +100,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Parameters:**
   - **$table:** The name of the table to delete data from.
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
-- **Returns:**
-  - The result of the query execution.
+- **Returns:** The result of the query execution.
 - **Details:**
   - Constructs and executes a `DELETE` query.
 
@@ -117,8 +109,7 @@ The `Query` class provides a simple interface for performing common database ope
 - **Description:** Hashes a password using HMAC with SHA-256.
 - **Parameters:**
   - **$password:** The plain text password to be hashed.
-- **Returns:**
-  - The hashed password.
+- **Returns:** The hashed password.
 - **Details:**
   - Uses a hard-coded key `"AccountPassword"` for hashing.
 
@@ -129,8 +120,7 @@ The `Query` class provides a simple interface for performing common database ope
   - **$username:** The username to authenticate.
   - **$password:** The plain text password to authenticate.
   - **$table:** The name of the table to check the credentials against.
-- **Returns:**
-  - An associative array of user data if authentication is successful; otherwise, an empty array.
+- **Returns:** An associative array of user data if authentication is successful; otherwise, an empty array.
 - **Details:**
   - Hashes the password and checks it against the stored hash in the specified table.
 
@@ -229,44 +219,38 @@ if ($userData) {
 
 ## Connect with Me
 
-I love connecting with new people and exploring new opportunities. Feel free to reach out to me through any of the
-platforms below:
+Feel free to reach out and connect through any of the following platforms:
 
 <table>
     <tr>
         <td>
-            <a href="https://t.me/iqbolshoh_777">
-                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/telegram.svg"
-                    height="48" width="48" alt="Telegram" />
+            <a href="https://t.me/iqbolshoh_777" target="_blank">
+                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/telegram.svg" height="48" width="48" alt="Telegram" />
             </a>
         </td>
         <td>
-            <a href="https://instagram.com/iqbolshoh_777" target="blank"><img align="center"
-                    src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg"
-                    alt="instagram" height="48" width="48" /></a>
-        </td>
-        <td>
-            <a href="https://wa.me/qr/22PVFQSMQQX4F1">
-                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/whatsapp.svg"
-                    height="48" width="48" alt="WhatsApp" />
+            <a href="https://instagram.com/iqbolshoh_777" target="_blank">
+                <img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="Instagram" height="48" width="48" />
             </a>
         </td>
         <td>
-            <a href="https://x.com/iqbolshoh_777">
-                <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" height="48"
-                    width="48" alt="Twitter" />
+            <a href="https://wa.me/qr/22PVFQSMQQX4F1" target="_blank">
+                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/whatsapp.svg" height="48" width="48" alt="WhatsApp" />
             </a>
         </td>
         <td>
-            <a href="https://www.linkedin.com/in/iqbolshoh/">
-                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/linkedin.svg"
-                    height="48" width="48" alt="LinkedIn" />
+            <a href="https://x.com/iqbolshoh_777" target="_blank">
+                <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" height="48" width="48" alt="Twitter" />
+            </a>
+        </td>
+        <td>
+            <a href="https://www.linkedin.com/in/iqbolshoh/" target="_blank">
+                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/linkedin.svg" height="48" width="48" alt="LinkedIn" />
             </a>
         </td>
         <td>
             <a href="mailto:iilhomjonov777@gmail.com">
-                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/gmail.svg"
-                    height="48" width="48" alt="Email" />
+                <img src="https://github.com/gayanvoice/github-active-users-monitor/blob/master/public/images/icons/gmail.svg" height="48" width="48" alt="Email" />
             </a>
         </td>
     </tr>
