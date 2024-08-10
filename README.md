@@ -219,6 +219,10 @@ if ($userData) {
         alt="MySQL">
 </div>
 
+## Contributing
+
+Contributions are welcome! If you have suggestions or want to enhance the project, feel free to fork the repository and submit a pull request.
+
 ## Connect with Me
 
 I love connecting with new people and exploring new opportunities. Feel free to reach out to me through any of the platforms below:
