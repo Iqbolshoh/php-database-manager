@@ -213,9 +213,11 @@ if ($userData) {
 ```
 
 ## Technologies
-
-- ![PHP](https://img.icons8.com/officel/40/000000/php-logo.png) **PHP**
-- ![MySQL](https://img.icons8.com/ios-filled/50/000000/mysql-logo.png) **MySQL**
+<div style="display: flex; flex-wrap: wrap; gap: 5px;">
+    <img src="https://img.shields.io/badge/PHP-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+    <img src="https://img.shields.io/badge/MySQL-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"
+        alt="MySQL">
+</div>
 
 ## Connect with Me
 
