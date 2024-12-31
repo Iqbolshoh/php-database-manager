@@ -16,6 +16,8 @@ The `Database` class provides a simple and effective interface for handling comm
   - [update()](#update)
   - [delete()](#delete)
   - [hashPassword()](#hashpassword)
+ 
+---
 
 ## Constructor and Destructor
 
