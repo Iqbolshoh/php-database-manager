@@ -1,4 +1,5 @@
 <?php
+
 // Include the config.php which contains the Database class
 include './config.php';
 

@@ -3,7 +3,7 @@
 define("DB_SERVER", "localhost");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
-define("DB_NAME", "database");
+define("DB_NAME", "example_database");
 
 class Database
 {
