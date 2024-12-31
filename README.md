@@ -1,6 +1,6 @@
 # Database Class
 
-![Banner Image](banner.png)
+![Banner Image](images/banner.png)
 
 The `Database` class provides a simple and effective interface for handling common database operations using PHP's `mysqli` extension. It includes methods for connecting to the database, executing queries, and performing basic CRUD (Create, Read, Update, Delete) operations. The class also features password hashing and user authentication.
 
