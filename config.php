@@ -1,23 +1,26 @@
 <?php
-class Query
-{
-    private $conn;
+// Database connection constants
+define("DB_SERVER", "localhost");
+define("DB_USERNAME", "root");
+define("DB_PASSWORD", "");
+define("DB_NAME", "database");
 
-    // Constructor: Initializes the database connection
+class Database
+{
+    private $conn; // Connection variable
+
+    // Constructor: Establish a database connection when the class is instantiated
     public function __construct()
     {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "database";
-        $this->conn = new mysqli($servername, $username, $password, $dbname);
+        $this->conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
+        // Check if the connection fails
         if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+            die("Database connection error: " . $this->conn->connect_error);
         }
     }
 
-    // Destructor: Closes the database connection
+    // Destructor: Close the database connection when the object is destroyed
     public function __destruct()
     {
         if ($this->conn) {
@@ -25,76 +28,94 @@ class Query
         }
     }
 
-    // validate(): Escapes special characters to prevent HTML injection
-    public function validate($data)
+    // Execute a prepared SQL query with optional parameters
+    public function executeQuery($sql, $params = [], $types = "")
     {
-        foreach ($data as $key => $value) {
-            $value = trim($value); // Remove whitespace from the beginning and end
-            $value = stripslashes($value); // Remove backslashes
-            $value = htmlspecialchars($value); // Convert special characters to HTML entities
-            $data[$key] = $value;
-        }
-        return $data;
-    }
+        $result = $this->conn->prepare($sql);
 
-    // executeQuery(): Executes a given SQL query
-    public function executeQuery($sql)
-    {
-        $result = $this->conn->query($sql);
-        if ($result === false) {
-            die("Error: " . $this->conn->error);
+        if (!$result) {
+            return "SQL error: " . $this->conn->error;
         }
+
+        if ($params) {
+            $result->bind_param($types, ...$params);
+        }
+
+        if (!$result->execute()) {
+            return "Execution error: " . $result->error;
+        }
+
         return $result;
     }
 
-    // select(): Retrieves data from the database
-    public function select($table, $columns = "*", $condition = "")
+    // Validate input data to prevent XSS and SQL injection
+    public function validate($value)
     {
-        $sql = "SELECT $columns FROM $table $condition";
-        return $this->executeQuery($sql)->fetch_all(MYSQLI_ASSOC);
+        return htmlspecialchars(trim(stripslashes($value)), ENT_QUOTES, 'UTF-8');
     }
 
-    // insert(): Inserts data into the database
+    // Retrieve data from the database
+    public function select($table, $columns = "*", $condition = "", $params = [], $types = "")
+    {
+        $sql = "SELECT $columns FROM $table" . ($condition ? " WHERE $condition" : "");
+        $result = $this->executeQuery($sql, $params, $types);
+
+        if (is_string($result)) {
+            return $result;
+        }
+
+        return $result->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Insert data into a table
     public function insert($table, $data)
     {
-        $keys = implode(', ', array_keys($data));
-        $values = "'" . implode("', '", array_values($data)) . "'";
-        $sql = "INSERT INTO $table ($keys) VALUES ($values)";
-        return $this->executeQuery($sql);
-    }
+        $keys = implode(', ', array_keys($data)); 
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        $sql = "INSERT INTO $table ($keys) VALUES ($placeholders)";
+        $types = str_repeat('s', count($data)); 
 
-    // update(): Updates data in the database
-    public function update($table, $data, $condition = "")
-    {
-        $set = '';
-        foreach ($data as $key => $value) {
-            $set .= "$key = '$value', ";
+        $result = $this->executeQuery($sql, array_values($data), $types);
+        if (is_string($result)) {
+            return $result;
         }
-        $set = rtrim($set, ', ');
-        $sql = "UPDATE $table SET $set $condition";
-        return $this->executeQuery($sql);
+
+        return $this->conn->insert_id;
     }
 
-    // delete(): Deletes data from the database
-    public function delete($table, $condition = "")
+    // Update data in a table
+    public function update($table, $data, $condition = "", $params = [], $types = "")
     {
-        $sql = "DELETE FROM $table $condition";
-        return $this->executeQuery($sql);
+        $set = implode(", ", array_map(function ($k) {
+            return "$k = ?";
+        }, array_keys($data)));
+        $sql = "UPDATE $table SET $set" . ($condition ? " WHERE $condition" : "");
+        $types = str_repeat('s', count($data)) . $types;
+
+        $result = $this->executeQuery($sql, array_merge(array_values($data), $params), $types);
+        if (is_string($result)) {
+            return $result;
+        }
+
+        return $this->conn->affected_rows;
     }
 
-    // hashPassword(): Hashes a password using HMAC with SHA-256
+    // Delete data from a table
+    public function delete($table, $condition = "", $params = [], $types = "")
+    {
+        $sql = "DELETE FROM $table" . ($condition ? " WHERE $condition" : "");
+
+        $result = $this->executeQuery($sql, $params, $types);
+        if (is_string($result)) {
+            return $result;
+        }
+
+        return $this->conn->affected_rows;
+    }
+
+    // Hash a password using HMAC SHA256
     public function hashPassword($password)
     {
-        $key = "AccountPassword";
-        $hashed_password = hash_hmac('sha256', $password, $key);
-        return $hashed_password;
-    }
-
-    // authenticate(): Checks user credentials for login
-    public function authenticate($username, $password, $table)
-    {
-        $password_hash = $this->hashPassword($password);
-        $condition = "WHERE username = '$username' AND password = '$password_hash'";
-        return $this->select($table, "*", $condition);
+        return hash_hmac('sha256', $password, 'iqbolshoh'); // Use a static key for hashing
     }
 }
