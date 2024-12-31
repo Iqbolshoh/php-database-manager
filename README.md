@@ -1,22 +1,21 @@
-# Query Class
+# Database Class
 
-The `Query` class provides a straightforward interface for handling common database operations using PHP's `mysqli` extension. It offers methods for connecting to a database, executing queries, and performing basic CRUD (Create, Read, Update, Delete) operations. Additionally, the class includes methods for password hashing and user authentication.
+![Banner Image](banner.png)
+
+The `Database` class provides a simple and effective interface for handling common database operations using PHP's `mysqli` extension. It includes methods for connecting to the database, executing queries, and performing basic CRUD (Create, Read, Update, Delete) operations. The class also features password hashing and user authentication.
 
 ## Table of Contents
 
+- [Installation](#installation)
 - [Constructor and Destructor](#constructor-and-destructor)
 - [Methods](#methods)
-  - validate()
-  - executeQuery() 
-  - select()
-  - insert() 
-  - update() 
-  - delete() 
-  - hashPassword() 
-  - authenticate()
-- [Usage Examples](#usage-examples)
-- [Technologies](#technologies)
-- [Contact](#contact)
+  - [executeQuery()](#executequery)
+  - [validate()](#validate)
+  - [select()](#select)
+  - [insert()](#insert)
+  - [update()](#update)
+  - [delete()](#delete)
+  - [hashPassword()](#hashpassword)
 
 ## Constructor and Destructor
 
@@ -38,9 +37,21 @@ The `Query` class provides a straightforward interface for handling common datab
 - **Description:** Closes the database connection when the object is destroyed.
 - **Parameters:** None
 - **Details:**
-  - Ensures the database connection is properly closed.
+  - Ensures the database connection is properly closed when the object is no longer needed.
+
+---
 
 ## Methods
+
+### [executeQuery($sql)](#executequery)
+
+- **Description:** Executes a given SQL query.
+- **Parameters:**
+  - **$sql:** The SQL query to be executed.
+- **Returns:** The result of the query.
+- **Details:**
+  - Displays an error message and exits if the query execution fails.
+  - This method is a low-level function that allows the execution of any SQL statement.
 
 ### [validate($data)](#validate)
 
@@ -51,16 +62,7 @@ The `Query` class provides a straightforward interface for handling common datab
 - **Details:**
   - Removes whitespace from the beginning and end.
   - Removes backslashes.
-  - Converts special characters to HTML entities.
-
-### [executeQuery($sql)](#executequery)
-
-- **Description:** Executes a given SQL query.
-- **Parameters:**
-  - **$sql:** The SQL query to be executed.
-- **Returns:** The result of the query.
-- **Details:**
-  - Displays an error message and exits if the query execution fails.
+  - Converts special characters to HTML entities to prevent SQL injection and XSS (Cross-Site Scripting) vulnerabilities.
 
 ### [select($table, $columns = "*", $condition = "")](#select)
 
@@ -71,7 +73,8 @@ The `Query` class provides a straightforward interface for handling common datab
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
 - **Returns:** An associative array of the result set.
 - **Details:**
-  - Constructs and executes a `SELECT` query.
+  - Constructs and executes a `SELECT` query to fetch data from the specified table.
+  - If no condition is provided, all rows are selected by default.
 
 ### [insert($table, $data)](#insert)
 
@@ -81,7 +84,8 @@ The `Query` class provides a straightforward interface for handling common datab
   - **$data:** An associative array of column names and values.
 - **Returns:** The result of the query execution.
 - **Details:**
-  - Constructs and executes an `INSERT` query.
+  - Constructs and executes an `INSERT` query to insert data into the table.
+  - Uses `mysqli`'s `prepare` and `bind_param` methods to prevent SQL injection.
 
 ### [update($table, $data, $condition = "")](#update)
 
@@ -92,7 +96,8 @@ The `Query` class provides a straightforward interface for handling common datab
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
 - **Returns:** The result of the query execution.
 - **Details:**
-  - Constructs and executes an `UPDATE` query.
+  - Constructs and executes an `UPDATE` query to modify existing data in the table.
+  - The `condition` is used to specify which records to update.
 
 ### [delete($table, $condition = "")](#delete)
 
@@ -102,7 +107,8 @@ The `Query` class provides a straightforward interface for handling common datab
   - **$condition:** An optional SQL condition (e.g., `WHERE id = 1`).
 - **Returns:** The result of the query execution.
 - **Details:**
-  - Constructs and executes a `DELETE` query.
+  - Constructs and executes a `DELETE` query to remove data from the table.
+  - If no condition is provided, all rows in the table will be deleted (use cautiously).
 
 ### [hashPassword($password)](#hashpassword)
 
@@ -111,104 +117,79 @@ The `Query` class provides a straightforward interface for handling common datab
   - **$password:** The plain text password to be hashed.
 - **Returns:** The hashed password.
 - **Details:**
-  - Uses a hard-coded key `"AccountPassword"` for hashing.
+  - Uses the `hash_hmac()` function with SHA-256 hashing algorithm and a hard-coded key `"AccountPassword"` for secure password storage.
+  - The resulting hash is intended for password verification purposes.
 
-### [authenticate($username, $password, $table)](#authenticate)
+---
 
-- **Description:** Checks user credentials for login.
-- **Parameters:**
-  - **$username:** The username to authenticate.
-  - **$password:** The plain text password to authenticate.
-  - **$table:** The name of the table to check the credentials against.
-- **Returns:** An associative array of user data if authentication is successful; otherwise, an empty array.
-- **Details:**
-  - Hashes the password and checks it against the stored hash in the specified table.
+## Examples
 
-## Usage Examples
+Here are some examples of how to use the `Database` class for car-related data:
 
-### Inserting Data
+### Inserting Car Data
 
 ```php
-$query = new Query();
+$query = new Database();
 
 $data = [
-    'name' => 'John',
-    'last_name' => 'Doe',
-    'birthday' => '1990-01-01',
-    'gender' => 'Male',
-    'username' => 'john_doe',
-    'password' => 'password123',
-    'phone_number' => '+1234567890',
-    'email' => 'john@example.com',
-    'profile_image' => 'profile.jpg'
+    'make' => 'Toyota',
+    'model' => 'Corolla',
+    'year' => 2022,
+    'price' => 25000.99
 ];
 
-$result = $query->insert('users', $data);
+$result = $query->insert('cars', $data);
 
 if ($result) {
-    echo "Data added successfully!";
+    echo "Car added successfully!";
 } else {
-    echo "Error adding data!";
+    echo "Error adding car!";
 }
 ```
 
-### Updating Data
+### Updating Car Data
 
 ```php
-$query = new Query();
+$query = new Database();
 
 $data = [
-    'password' => 'new_password123'
+    'price' => 23000.99
 ];
 
-$result = $query->update('users', $data, "WHERE username = 'john_doe'");
+$result = $query->update('cars', $data, "WHERE model = 'Corolla' AND year = 2022");
 
 if ($result) {
-    echo "Data updated successfully!";
+    echo "Car data updated successfully!";
 } else {
-    echo "Error updating data!";
+    echo "Error updating car data!";
 }
 ```
 
-### Selecting Data
+### Selecting Car Data
 
 ```php
-$query = new Query();
+$query = new Database();
 
-$userData = $query->select('users', '*', "WHERE username = 'john_doe'");
+$carData = $query->select('cars', '*', "WHERE model = 'Corolla' AND year = 2022");
 
-if ($userData) {
-    print_r($userData);
+if ($carData) {
+    print_r($carData);
 } else {
-    echo "Error retrieving data!";
+    echo "Error retrieving car data!";
 }
 ```
 
-### Deleting Data
+### Deleting Car Data
 
 ```php
-$query = new Query();
+$query = new Database();
 
-$result = $query->delete('users', "WHERE username = 'john_doe'");
+$result = $query->delete('cars', "WHERE model = 'Corolla' AND year = 2022");
 
 if ($result) {
-    echo "Data deleted successfully!";
+    echo "Car deleted successfully!";
 } else {
-    echo "Error deleting data!";
-}
-```
-
-### Authenticating User
-
-```php
-$query = new Query();
-
-$userData = $query->authenticate('john_doe', 'password123', 'users');
-
-if ($userData) {
-    echo "Authentication successful!";
-} else {
-    echo "Authentication failed!";
+    echo "Error deleting car!";
 }
 ```
 
@@ -218,6 +199,32 @@ if ($userData) {
     <img src="https://img.shields.io/badge/MySQL-%234479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"
         alt="MySQL">
 </div>
+
+---
+
+## Installation
+
+To get started with the `Database` class, follow these steps:
+
+1. **Download the repository** or clone it using Git:
+
+    ```bash
+    git clone <repository_url>
+    ```
+
+2. **Upload the `Database.php` file** to your project directory.
+
+3. **Include the class** in your PHP file where you need to interact with the database:
+
+    ```php
+    require_once 'Database.php';
+    ```
+
+4. **Setup your database connection** (MySQL or MariaDB) with the parameters defined in the class (server, username, password, database name).
+
+5. Start using the class methods to interact with your database!
+
+---
 
 ## Contributing
 
