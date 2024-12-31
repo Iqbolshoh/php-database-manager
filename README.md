@@ -131,6 +131,7 @@ Here are some examples of how to use the `Database` class for car-related data:
 ### Inserting Car Data
 
 ```php
+include './config.php';
 $query = new Database();
 
 $data = [
@@ -152,6 +153,7 @@ if ($result) {
 ### Updating Car Data
 
 ```php
+include './config.php';
 $query = new Database();
 
 $data = [
@@ -170,6 +172,7 @@ if ($result) {
 ### Selecting Car Data
 
 ```php
+include './config.php';
 $query = new Database();
 
 $carData = $query->select('cars', '*', "WHERE model = 'Corolla' AND year = 2022");
@@ -184,6 +187,7 @@ if ($carData) {
 ### Deleting Car Data
 
 ```php
+include './config.php';
 $query = new Database();
 
 $result = $query->delete('cars', "WHERE model = 'Corolla' AND year = 2022");
@@ -214,12 +218,12 @@ To get started with the `Database` class, follow these steps:
     git clone <repository_url>
     ```
 
-2. **Upload the `Database.php` file** to your project directory.
+2. **Upload the `config.php` file** to your project directory.
 
 3. **Include the class** in your PHP file where you need to interact with the database:
 
     ```php
-    require_once 'Database.php';
+    require_once 'config.php';
     ```
 
 4. **Setup your database connection** (MySQL or MariaDB) with the parameters defined in the class (server, username, password, database name).
