@@ -1,4 +1,4 @@
-# Database Class
+# PHP Database Manager
 
 The `Database` class provides a simple and effective interface for handling common database operations using PHP's `mysqli` extension. It includes methods for connecting to the database, executing queries, and performing basic CRUD (Create, Read, Update, Delete) operations. The class also features password hashing and user authentication.
 
