@@ -1,6 +1,6 @@
-# 📌 Database Class - PHP MySQL Wrapper
+# 📌 Database Manager - PHP MySQL Wrapper
 
-🚀 This is a simple and secure PHP database wrapper class that uses MySQLi for database interactions. It provides an easy-to-use interface for executing queries, fetching results, and managing transactions efficiently.
+🚀 This project, developed by **Iqbolshoh Ilhomjonov**, is a simple and secure PHP database wrapper class that uses MySQLi for database interactions. It provides an easy-to-use interface for executing queries, fetching results, and managing transactions efficiently.
 
 ## ✨ Features
 - 🔒 **Secure MySQLi connection**
@@ -20,9 +20,9 @@ Or simply include the `Database.php` file in your project and create an instance
 ## 🛠️ Usage
 ### 1️⃣ Initialize the Database
 ```php
-require_once 'Database.php';
+require_once 'config.php';
 
-$db = new Database('localhost', 'username', 'password', 'database_name');
+$db = new Database();
 ```
 
 ### 2️⃣ Running Queries
