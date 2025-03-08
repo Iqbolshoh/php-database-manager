@@ -136,33 +136,4 @@ class Database
             $params
         )->fetch()['total'];
     }
-
-    /**
-     * Check if user session is valid and has the required role.
-     *
-     * @param string $role Required user role.
-     */
-    public function check_session($role)
-    {
-        if (($_SESSION['loggedin'] ?? false) !== true || ($_SESSION['user']['role'] ?? '') !== $role) {
-            header("Location: " . SITE_PATH . "/login/");
-            exit;
-        }
-
-        if (!$this->select('active_sessions', '*', 'session_token = ?', [session_id()])) {
-            header("Location: " . SITE_PATH . "/logout/");
-            exit;
-        }
-    }
-
-    /**
-     * Generate CSRF token and store it in session.
-     *
-     * @return string The generated CSRF token.
-     */
-
-    public function generate_csrf_token()
-    {
-        return $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
 }
