@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS example_database;
+CREATE DATABASE IF NOT EXISTS php_database_menager;
 
-USE example_database;
+USE php_database_menager;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
