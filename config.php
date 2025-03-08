@@ -1,121 +1,168 @@
 <?php
-// Database connection constants
+// === [DATABASE CONFIGURATION] ===
+
 define("DB_SERVER", "localhost");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
 define("DB_NAME", "example_database");
 
+// Dynamically determine the base site URL
+define("SITE_PATH", ($_SERVER['REQUEST_SCHEME'] ?? 'http') . "://" . $_SERVER['HTTP_HOST']);
+
+// Set the system timezone to GMT-5
+date_default_timezone_set('Etc/GMT-5');
+
+// Define user roles and their corresponding dashboard paths
+define('ROLES', [
+    'admin' => '/admin/',
+    'user' => '/'
+]);
+
 class Database
 {
-    private $conn; // Connection variable
+    private $conn;
 
-    // Constructor: Establish a database connection when the class is instantiated
     public function __construct()
     {
-        $this->conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-        // Check if the connection fails
-        if ($this->conn->connect_error) {
-            die("Database connection error: " . $this->conn->connect_error);
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME,
+                DB_USERNAME,
+                DB_PASSWORD,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]
+            );
+        } catch (PDOException $e) {
+            die("Database connection error: " . $e->getMessage());
         }
     }
 
-    // Destructor: Close the database connection when the object is destroyed
-    public function __destruct()
+    /**
+     * Execute an SQL query.
+     *
+     * @param string $sql The SQL statement.
+     * @param array $params Parameters for the prepared statement.
+     * @return PDOStatement The executed statement.
+     */
+    public function execute($sql, $params = [])
     {
-        if ($this->conn) {
-            $this->conn->close();
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            die("Query Error: " . $e->getMessage());
         }
     }
 
-    // Execute a prepared SQL query with optional parameters
-    public function executeQuery($sql, $params = [], $types = "")
+    /**
+     * Retrieve records from a database table.
+     *
+     * @param string $table Table name.
+     * @param string $columns Columns to select (default: "*").
+     * @param string $condition WHERE clause condition (default: none).
+     * @param array $params Parameters for the condition.
+     * @return array The result set.
+     */
+    public function select($table, $columns = "*", $condition = "", $params = [])
     {
-        $result = $this->conn->prepare($sql);
-
-        if (!$result) {
-            return "SQL error: " . $this->conn->error;
-        }
-
-        if ($params) {
-            $result->bind_param($types, ...$params);
-        }
-
-        if (!$result->execute()) {
-            return "Execution error: " . $result->error;
-        }
-
-        return $result;
+        return $this->execute(
+            "SELECT $columns FROM $table" . ($condition ? " WHERE $condition" : ""),
+            $params
+        )->fetchAll();
     }
 
-    // Validate input data to prevent XSS and SQL injection
-    public function validate($value)
-    {
-        return htmlspecialchars(trim(stripslashes($value)), ENT_QUOTES, 'UTF-8');
-    }
-
-    // Retrieve data from the database
-    public function select($table, $columns = "*", $condition = "", $params = [], $types = "")
-    {
-        $sql = "SELECT $columns FROM $table" . ($condition ? " WHERE $condition" : "");
-        $result = $this->executeQuery($sql, $params, $types);
-
-        if (is_string($result)) {
-            return $result;
-        }
-
-        return $result->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
-
-    // Insert data into a table
+    /**
+     * Insert a new record into a table.
+     *
+     * @param string $table Table name.
+     * @param array $data Associative array of column => value.
+     * @return int The last inserted ID.
+     */
     public function insert($table, $data)
     {
-        $keys = implode(', ', array_keys($data)); 
+        $keys = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
-        $sql = "INSERT INTO $table ($keys) VALUES ($placeholders)";
-        $types = str_repeat('s', count($data)); 
-
-        $result = $this->executeQuery($sql, array_values($data), $types);
-        if (is_string($result)) {
-            return $result;
-        }
-
-        return $this->conn->insert_id;
+        $this->execute("INSERT INTO $table ($keys) VALUES ($placeholders)", array_values($data));
+        return $this->conn->lastInsertId();
     }
 
-    // Update data in a table
-    public function update($table, $data, $condition = "", $params = [], $types = "")
+    /**
+     * Update existing records in a table.
+     *
+     * @param string $table Table name.
+     * @param array $data Associative array of columns and values to update.
+     * @param string $condition Condition for selecting records to update.
+     * @param array $params Additional parameters for the condition.
+     * @return int Number of affected rows.
+     */
+    public function update($table, $data, $condition, $params = [])
     {
-        $set = implode(", ", array_map(function ($k) {
-            return "$k = ?";
-        }, array_keys($data)));
-        $sql = "UPDATE $table SET $set" . ($condition ? " WHERE $condition" : "");
-        $types = str_repeat('s', count($data)) . $types;
-
-        $result = $this->executeQuery($sql, array_merge(array_values($data), $params), $types);
-        if (is_string($result)) {
-            return $result;
-        }
-
-        return $this->conn->affected_rows;
+        $set = implode(", ", array_map(fn($k) => "$k = ?", array_keys($data))); // Prepare SET clause
+        return $this->execute(
+            "UPDATE $table SET $set WHERE $condition",
+            array_merge(array_values($data), $params)
+        )->rowCount();
     }
 
-    // Delete data from a table
-    public function delete($table, $condition = "", $params = [], $types = "")
+    /**
+     * Delete records from a table.
+     *
+     * @param string $table Table name.
+     * @param string $condition Condition to filter records to delete.
+     * @param array $params Additional parameters for the condition.
+     * @return int Number of deleted rows.
+     */
+    public function delete($table, $condition, $params = [])
     {
-        $sql = "DELETE FROM $table" . ($condition ? " WHERE $condition" : "");
-
-        $result = $this->executeQuery($sql, $params, $types);
-        if (is_string($result)) {
-            return $result;
-        }
-
-        return $this->conn->affected_rows;
+        return $this->execute("DELETE FROM $table WHERE $condition", $params)->rowCount();
     }
 
-    // Hash a password using HMAC SHA256
-    public function hashPassword($password)
+    /**
+     * Count the number of records in a table.
+     *
+     * @param string $table Table name.
+     * @param string $condition Optional condition to filter records.
+     * @param array $params Additional parameters for the condition.
+     * @return int The count of matching records.
+     */
+    public function count($table, $condition = "", $params = [])
     {
-        return hash_hmac('sha256', $password, 'iqbolshoh'); // Use a static key for hashing
+        return $this->execute(
+            "SELECT COUNT(*) as total FROM $table" . ($condition ? " WHERE $condition" : ""),
+            $params
+        )->fetch()['total'];
+    }
+
+    /**
+     * Check if user session is valid and has the required role.
+     *
+     * @param string $role Required user role.
+     */
+    public function check_session($role)
+    {
+        if (($_SESSION['loggedin'] ?? false) !== true || ($_SESSION['user']['role'] ?? '') !== $role) {
+            header("Location: " . SITE_PATH . "/login/");
+            exit;
+        }
+
+        if (!$this->select('active_sessions', '*', 'session_token = ?', [session_id()])) {
+            header("Location: " . SITE_PATH . "/logout/");
+            exit;
+        }
+    }
+
+    /**
+     * Generate CSRF token and store it in session.
+     *
+     * @return string The generated CSRF token.
+     */
+
+    public function generate_csrf_token()
+    {
+        return $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 }
