@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../app/Core/Database.php'; // Include the Database class
-$db = new Database(); // Create a new Database instance
+require_once '../app/Core/Database.php';
+$db = new Database();
 
 // ➕ Insert a new user
 $user_id = $db->insert('users', ['name' => 'Iqbolshoh Ilhomjonov', 'email' => 'iilhomjonov777@gmail.com']);

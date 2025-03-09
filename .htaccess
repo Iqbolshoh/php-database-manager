@@ -1,6 +1,29 @@
-# Enable UTF-8 encoding
-AddDefaultCharset utf-8
+# .htaccess fayli
 
-# Redirect error pages
-ErrorDocument 404 /public/404.php
-ErrorDocument 500 /public/500.php
+# ModRewrite ni yoqish
+RewriteEngine On
+
+# Barcha so'rovlarni public/index.php ga yo'naltirish
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Agar fayl yoki papka mavjud bo'lmasa, index.php ga yo'naltirish
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Favicon uchun so'rovlarni boshqarish
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^favicon\.ico$ public/assets/images/favicon.ico [L]
+
+# CSS, JS va boshqa statik fayllarga kirishni ruxsat berish
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ [NC]
+RewriteRule ^(.*)$ public/assets/$1 [L]
+
+# Index faylini ko'rsatish
+DirectoryIndex public/index.php
+
+# Xatolik sahifalarini sozlash
+ErrorDocument 404 /public/index.php
+ErrorDocument 403 /public/index.php
+ErrorDocument 500 /public/index.php
