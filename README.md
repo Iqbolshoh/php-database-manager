@@ -2,6 +2,8 @@
 
 🚀 This project, developed by **Iqbolshoh Ilhomjonov**, is a simple and secure PHP database wrapper class that uses MySQLi for database interactions. It provides an easy-to-use interface for executing queries, fetching results, and managing transactions efficiently.
 
+![Banner Image](./assets/images/banner.png)
+
 ## ✨ Features
 - 🔒 **Secure MySQLi connection**
 - ⚡ **Supports prepared statements**
@@ -20,7 +22,7 @@ Or simply include the `Database.php` file in your project and create an instance
 ## 🛠️ Usage
 ### 1️⃣ Initialize the Database
 ```php
-require_once 'database.php';
+require_once 'Database.php';
 $db = new Database();
 ```
 
