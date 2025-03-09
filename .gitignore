@@ -1,11 +1,6 @@
 # 🛠 Composer `vendor/` directory should not be included
 /vendor/
 
-# 🛠 `.env` file contains sensitive information
-.env
-.env.local
-.env.*.local
-
 # 🛠 Cache, logs, and temporary files
 /storage/logs/
 storage/cache/
