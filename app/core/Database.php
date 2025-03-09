@@ -33,7 +33,7 @@ class Database
      *
      * @param string $sql The SQL statement.
      * @param array $params Parameters for the prepared statement.
-     * @return PDOStatement The executed statement.
+     * @return // PDOStatement The executed statement.
      */
     public function execute($sql, $params = [])
     {
@@ -42,7 +42,7 @@ class Database
             $stmt->execute($params);
             return $stmt;
         } catch (PDOException $e) {
-            die("Query Error: " . $e->getMessage());
+            throw new PDOException("Query Error: " . $e->getMessage());
         }
     }
 
