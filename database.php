@@ -118,4 +118,64 @@ class Database
             $params
         )->fetch()['total'];
     }
+
+    /**
+     * Check if user session is valid and has the required role.
+     *
+     * @param string $role Required user role.
+     */
+    public function check_session($role)
+    {
+        if (($_SESSION['loggedin'] ?? false) !== true || ($_SESSION['user']['role'] ?? '') !== $role) {
+            header("Location: " . SITE_PATH . "/login/");
+            exit;
+        }
+
+        if (!$this->select('active_sessions', '*', 'session_token = ?', [session_id()])) {
+            header("Location: " . SITE_PATH . "/logout/");
+            exit;
+        }
+    }
+
+    /**
+     * Generate CSRF token and store it in session.
+     *
+     * @return string The generated CSRF token.
+     */
+
+    public function generate_csrf_token()
+    {
+        return $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    // ============================== //
+    //        TRANSACTION METHODS     //
+    // ============================== //
+
+    /**
+     * Starts a new database transaction.
+     * Transactions allow multiple queries to be executed safely.
+     */
+    public function beginTransaction()
+    {
+        $this->conn->beginTransaction();
+    }
+
+    /**
+     * Commits the current transaction.
+     * This ensures that all queries within the transaction are saved to the database.
+     */
+    public function commit()
+    {
+        $this->conn->commit();
+    }
+
+    /**
+     * Rolls back the current transaction.
+     * This cancels all queries within the transaction if an error occurs.
+     */
+    public function rollback()
+    {
+        $this->conn->rollBack();
+    }
 }

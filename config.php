@@ -11,3 +11,9 @@ define("SITE_PATH", ($_SERVER['REQUEST_SCHEME'] ?? 'http') . "://" . $_SERVER['H
 
 // Set the system timezone to GMT-5
 date_default_timezone_set('Etc/GMT-5');
+
+// Define user roles and their corresponding dashboard paths
+define('ROLES', [
+    'admin' => '/admin/',
+    'user' => '/'
+]);
