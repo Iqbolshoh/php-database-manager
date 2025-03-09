@@ -20,26 +20,25 @@ Or simply include the `Database.php` file in your project and create an instance
 ## 🛠️ Usage
 ### 1️⃣ Initialize the Database
 ```php
-require_once 'config.php';
-
+require_once 'database.php';
 $db = new Database();
 ```
 
 ### 2️⃣ Running Queries
 #### 🔍 Select Data
 ```php
-$users = $db->query("SELECT * FROM users WHERE status = ?", ['active']);
+$users = $db->query("SELECT * FROM users WHERE email = ?", ['iilhomjonov777@gmail.com']);
 print_r($users);
 ```
 
 #### ➕ Insert Data
 ```php
-$db->query("INSERT INTO users (name, email) VALUES (?, ?)", ['John Doe', 'john@example.com']);
+$db->query("INSERT INTO users (name, email) VALUES (?, ?)", ['Iqbolshoh Ilhomjonov', 'iilhomjonov777@gmail.com']);
 ```
 
 #### ✏️ Update Data
 ```php
-$db->query("UPDATE users SET status = ? WHERE id = ?", ['inactive', 3]);
+$db->query("UPDATE users SET email = ? WHERE id = ?", ['iqbolshoh123@gmail.com', 3]);
 ```
 
 #### ❌ Delete Data

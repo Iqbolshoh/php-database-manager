@@ -3,7 +3,7 @@ require_once './database.php'; // Include the Database class
 $db = new Database(); // Create a new Database instance
 
 // ➕ Insert a new user
-$user_id = $db->insert('users', ['name' => 'Iqbolshoh Ilhomjonov', 'email' => 'iqbolshoh@gmail.com']);
+$user_id = $db->insert('users', ['name' => 'Iqbolshoh Ilhomjonov', 'email' => 'iilhomjonov777@gmail.com']);
 
 echo $user_id ? "User added: ID $user_id<br>" : "Error adding user!<br>";
 
