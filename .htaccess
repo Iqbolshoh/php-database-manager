@@ -1,29 +1,26 @@
-# .htaccess fayli
+<IfModule mod_rewrite.c>
 
-# ModRewrite ni yoqish
-RewriteEngine On
+    RewriteEngine On
 
-# Barcha so'rovlarni public/index.php ga yo'naltirish
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ public/$1 [L]
+    # Redirect requests not pointing to /public, /assets (for specific file types), to /public
+    RewriteCond %{REQUEST_URI} !^/public
+    RewriteCond %{REQUEST_URI} !^/assets/.*\.(css|js|png|jpg|jpeg|svg|json)$ [NC]
+    RewriteRule ^(.*)$ /public/$1 [L]
 
-# Agar fayl yoki papka mavjud bo'lmasa, index.php ga yo'naltirish
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ public/index.php [QSA,L]
+    # Allow access to specific file types in /assets for all IPs
+    RewriteCond %{REQUEST_URI} ^/assets/.*\.(css|js|png|jpg|jpeg|svg|json)$ [NC]
+    RewriteRule ^(.*)$ - [L]
 
-# Favicon uchun so'rovlarni boshqarish
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^favicon\.ico$ public/assets/images/favicon.ico [L]
+    # Deny access to /assets for all other files except for IP 127.0.0.1
+    RewriteCond %{REQUEST_URI} ^/assets
+    RewriteCond %{REMOTE_ADDR} !=127.0.0.1
+    RewriteRule ^(.*)$ - [R=404,L]
 
-# CSS, JS va boshqa statik fayllarga kirishni ruxsat berish
-RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ [NC]
-RewriteRule ^(.*)$ public/assets/$1 [L]
+    # Custom error documents
+    ErrorDocument 400 /public/errors.php?error=400
+    ErrorDocument 401 /public/errors.php?error=401
+    ErrorDocument 403 /public/errors.php?error=403
+    ErrorDocument 404 /public/errors.php?error=404
+    ErrorDocument 500 /public/errors.php?error=500
 
-# Index faylini ko'rsatish
-DirectoryIndex public/index.php
-
-# Xatolik sahifalarini sozlash
-ErrorDocument 404 /public/index.php
-ErrorDocument 403 /public/index.php
-ErrorDocument 500 /public/index.php
+</IfModule>

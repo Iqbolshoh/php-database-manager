@@ -1,22 +1,22 @@
-# 🛠 Composer `vendor/` papkasi yuklanmaydi
+# 🛠 Composer `vendor/` directory should not be included
 /vendor/
 
-# 🛠 `.env` fayli maxfiy ma'lumotlarni saqlaydi
+# 🛠 `.env` file contains sensitive information
 .env
 .env.local
 .env.*.local
 
-# 🛠 Kesh, loglar va vaqtinchalik fayllar
+# 🛠 Cache, logs, and temporary files
 /storage/logs/
 storage/cache/
 storage/framework/sessions/
 storage/framework/views/
 storage/framework/cache/
 
-# 🛠 `node_modules/` agar frontend ham ishlatilsa
+# 🛠 `node_modules/` if frontend is used
 /node_modules/
 
-# 🛠 IDE va OS fayllari
+# 🛠 IDE and OS files
 .idea/
 .vscode/
 *.swp
@@ -26,6 +26,6 @@ storage/framework/cache/
 *.DS_Store
 Thumbs.db
 
-# 🛠 Debug va error loglar
+# 🛠 Debug and error logs
 *.log
 php_errorlog

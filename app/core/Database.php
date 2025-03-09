@@ -125,32 +125,31 @@ class Database
         )->fetch()['total'];
     }
 
+    /**
+     * Generate CSRF token and store it in session.
+     *
+     * @return string The generated CSRF token.
+     */
+
+    public function generate_csrf_token()
+    {
+        return $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
     // ============================== //
     //        TRANSACTION METHODS     //
     // ============================== //
 
-    /**
-     * Starts a new database transaction.
-     * Transactions allow multiple queries to be executed safely.
-     */
     public function beginTransaction()
     {
         $this->conn->beginTransaction();
     }
 
-    /**
-     * Commits the current transaction.
-     * This ensures that all queries within the transaction are saved to the database.
-     */
     public function commit()
     {
         $this->conn->commit();
     }
 
-    /**
-     * Rolls back the current transaction.
-     * This cancels all queries within the transaction if an error occurs.
-     */
     public function rollback()
     {
         $this->conn->rollBack();
