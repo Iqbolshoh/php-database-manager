@@ -1,5 +1,11 @@
 <?php
-require_once '../Config/config.php';
+namespace App\Core;
+
+require_once __DIR__ . '/../Config/config.php';
+
+use PDO;
+use PDOException;
+
 class Database
 {
     private $conn;

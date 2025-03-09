@@ -1,0 +1,31 @@
+# 🛠 Composer `vendor/` papkasi yuklanmaydi
+/vendor/
+
+# 🛠 `.env` fayli maxfiy ma'lumotlarni saqlaydi
+.env
+.env.local
+.env.*.local
+
+# 🛠 Kesh, loglar va vaqtinchalik fayllar
+/storage/logs/
+storage/cache/
+storage/framework/sessions/
+storage/framework/views/
+storage/framework/cache/
+
+# 🛠 `node_modules/` agar frontend ham ishlatilsa
+/node_modules/
+
+# 🛠 IDE va OS fayllari
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.DS_Store
+Thumbs.db
+
+# 🛠 Debug va error loglar
+*.log
+php_errorlog

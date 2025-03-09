@@ -1,6 +1,10 @@
 <?php
-require_once '../app/Core/Database.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Core\Database;
+
 $db = new Database();
+
 
 // ➕ Insert a new user
 $user_id = $db->insert('users', ['name' => 'Iqbolshoh Ilhomjonov', 'email' => 'iilhomjonov777@gmail.com']);
