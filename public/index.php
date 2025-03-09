@@ -1,5 +1,5 @@
 <?php
-require_once './database.php'; // Include the Database class
+require_once __DIR__ . '/../app/Core/Database.php'; // Include the Database class
 $db = new Database(); // Create a new Database instance
 
 // ➕ Insert a new user

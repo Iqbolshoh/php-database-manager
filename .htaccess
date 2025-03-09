@@ -1,0 +1,6 @@
+# Enable UTF-8 encoding
+AddDefaultCharset utf-8
+
+# Redirect error pages
+ErrorDocument 404 /public/404.php
+ErrorDocument 500 /public/500.php
