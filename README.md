@@ -20,6 +20,7 @@ You can clone the repository from GitHub:
 Or simply include the `Database.php` file in your project and create an instance of the `Database` class.
 
 ## 🛠️ Usage
+
 ### 1️⃣ Initialize the Database
 ```php
 require_once 'Database.php';
@@ -27,6 +28,7 @@ $db = new Database();
 ```
 
 ### 2️⃣ Running Queries
+
 #### 🔍 Select Data
 ```php
 $users = $db->query("SELECT * FROM users WHERE email = ?", ['iilhomjonov777@gmail.com']);
