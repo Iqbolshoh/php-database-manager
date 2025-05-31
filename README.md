@@ -1,4 +1,4 @@
-# 📌 Database Manager - PHP MySQL Wrapper
+# 📌 PHP Database Manager
 
 🚀 This project, developed by **Iqbolshoh Ilhomjonov**, is a simple and secure PHP database wrapper class that uses MySQLi for database interactions. It provides an easy-to-use interface for executing queries, fetching results, and managing transactions efficiently.
 
